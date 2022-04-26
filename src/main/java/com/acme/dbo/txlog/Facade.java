@@ -1,55 +1,72 @@
 package com.acme.dbo.txlog;
 
+import static com.acme.dbo.txlog.MessageDecorator.decorateMessageWithPostfix;
 import static com.acme.dbo.txlog.MessageDecorator.decorateMessageWithPrefix;
 import static com.acme.dbo.txlog.Printer.*;
 
-// separate class PrefixMessageDecorator with static functions decorateMessage with different types of parameters
-// constants should be private
-
 public class Facade {
 
-    public static String incomingMessage = "";
-    public static int intMessage = 0;
-    public static int intCounter = 0;
-    public static int equalStrCounter = 0;
+    private static String stringAccumulator = "";
+    private static int intMessage = 0;
+    private static int intCounter = 0;
+    private static int stringCounter = 0;
 
     public static void log(int message) {
-        printToConsoleAndResetString();
+        printAndFlushString();
         intMessage += message;
         intCounter++;
 //TODO iteration01        printToConsole(decorateMessage(message));
     }
 
     public static void log(byte message) {
-        printToConsole(MessageDecorator.decorateMessageWithPrefix(message));
+        printToConsole(decorateMessageWithPrefix(message));
     }
 
     public static void log(char message) {
-        printToConsole(MessageDecorator.decorateMessageWithPrefix(message));
+        printToConsole(decorateMessageWithPrefix(message));
     }
 
     public static void log(String message) {
-        printToConsoleAndResetInt();
-        if(!message.equals(incomingMessage)) {
-            printToConsoleAndResetString();
+        printAndFlushInt();
+        Object myObject = new Object();
+        if (!stringAccumulator.equals(message)) {
+            printAndFlushString();
         }
-        incomingMessage = message;
-        equalStrCounter++;
+        stringAccumulator = message;
+        stringCounter++;
 // TODO: iteration01      printToConsole(decorateMessage(message));
     }
 
     public static void log(boolean message) {
-        printToConsole(MessageDecorator.decorateMessageWithPrefix(message));
+        printToConsole(decorateMessageWithPrefix(message));
     }
 
     public static void log(Object message) {
         printToConsole(decorateMessageWithPrefix(message));
     }
 
-    public static void close()
-    {
-        printToConsoleAndResetInt();
-        printToConsoleAndResetString();
+    public static void printAndFlushInt() {
+        if (intCounter != 0) {
+            printToConsole(MessageDecorator.decorateMessageWithPrefix(intMessage));
+            intMessage = 0;
+            intCounter = 0;
+        }
+    }
+
+    public static void printAndFlushString() {
+        if (stringAccumulator.isEmpty()) return;
+        if (stringCounter > 1) {
+            printToConsole(decorateMessageWithPostfix(stringAccumulator, stringCounter));
+        } else {
+            printToConsole(decorateMessageWithPrefix(stringAccumulator));
+        }
+        stringAccumulator = "";
+        stringCounter = 0;
+    }
+
+    public static void close() {
+        printAndFlushInt();
+        printAndFlushString();
     }
 
 }
