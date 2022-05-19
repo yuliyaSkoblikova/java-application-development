@@ -24,10 +24,6 @@ public class MessageDecorator {
         return PRIMITIVE_PREFIX + message;
     }
 
-    public static String decorateMessageWithPrefix(int message) {
-        return PRIMITIVE_PREFIX + message;
-    }
-
     public static String decorateMessageWithPrefix(boolean message) {
         return PRIMITIVE_PREFIX + message;
     }
