@@ -1,9 +1,6 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.MessageDecorator;
-import com.acme.dbo.txlog.saver.ConsoleSaver;
-
-public class IntMessage {
+public class IntMessage implements Message {
 
     private final String PRIMITIVE_PREFIX = "primitive: ";
     private int value;
@@ -16,14 +13,18 @@ public class IntMessage {
         return value;
     }
 
-    public void log(int message, ConsoleSaver consoleSaver) {
-//        printAndFlushString();
-        value += message;
-//        intCounter++;
-        consoleSaver.save(decorate());
+    @Override
+    public String decorate() {
+        return PRIMITIVE_PREFIX + value;
     }
 
-    private String decorate() {
-        return PRIMITIVE_PREFIX + value;
+    @Override
+    public boolean isSame(Message message) {
+        return message instanceof IntMessage;
+    }
+
+    @Override
+    public void accumulate(Message message) {
+        value += ((IntMessage) message).value;
     }
 }

@@ -8,16 +8,28 @@ import static com.acme.dbo.txlog.MessageDecorator.decorateMessageWithPrefix;
 
 public class Facade {
 
-    private static String stringAccumulator = "";
-    private static int intMessage = 0;
-    private static int intCounter = 0;
-    private static int stringCounter = 0;
+//    private static String stringAccumulator = "";
+//    private static int intMessage = 0;
+//    private static int intCounter = 0;
+//    private static int stringCounter = 0;
 
-    private static LogService service = new LogService();
+    private static LogService service = new LogService(new ConsoleSaver());
 
     public static void log(int intMessage){
         service.log(new IntMessage(intMessage));
     }
+
+        public static void printAndFlushInt() {
+        service.flush();
+    }
+
+//    public static void printAndFlushInt() {
+//        if (intCounter != 0) {
+//            consoleSaver.save(MessageDecorator.decorateMessageWithPrefix(intMessage));
+//            intMessage = 0;
+//            intCounter = 0;
+//        }
+//    }
 
 //    public static void log(String message) {
 //        printAndFlushInt();
@@ -46,13 +58,7 @@ public class Facade {
 //        printToConsole(decorateMessageWithPrefix(message));
 //    }
 
-//    public static void printAndFlushInt() {
-//        if (intCounter != 0) {
-//            consoleSaver.save(MessageDecorator.decorateMessageWithPrefix(intMessage));
-//            intMessage = 0;
-//            intCounter = 0;
-//        }
-//    }
+
 //
 //    public static void printAndFlushString() {
 //        if (stringAccumulator.isEmpty()) return;
