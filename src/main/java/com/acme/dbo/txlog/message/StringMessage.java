@@ -1,10 +1,11 @@
 package com.acme.dbo.txlog.message;
 
-public class StringMessage implements Message{
-    private final String STRING_PREFIX = "string: ";
+public class StringMessage extends PrefixDecoratingMessage {
+
     private String value;
 
     public StringMessage(String value) {
+        super("string: ");
         this.value = value;
     }
 
@@ -14,7 +15,7 @@ public class StringMessage implements Message{
 
     @Override
     public String decorate() {
-        return STRING_PREFIX + value;
+        return super.decorate(this.value);
     }
 
     @Override
@@ -23,7 +24,8 @@ public class StringMessage implements Message{
     }
 
     @Override
-    public void accumulate(Message message){
-        value += ((StringMessage)message).value;
+    public Message accumulate(Message message) {
+        value += ((StringMessage) message).value;
+        return this;
     }
 }

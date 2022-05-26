@@ -32,7 +32,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Facade.log(0);
         Facade.printAndFlushInt();
         Facade.log(-1);
-//        Facade.close();
+        Facade.close();
         //endregion
 
         //region then
@@ -42,6 +42,21 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
+    @Test
+    public void shouldLogString() throws IOException {
+        //region when
+        Facade.log("test string 1");
+        Facade.printAndFlushString();
+        Facade.log("other str");
+        Facade.close();
+        //endregion
+
+        //region then
+        assertSysoutContains("string: ");
+        assertSysoutContains("test string 1");
+        assertSysoutContains("other str");
+        //endregion
+    }
 
 //    @Test
 //    public void shouldLogByte() throws IOException {
@@ -75,21 +90,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 //        //endregion
 //    }
 
-//    @Test
-//    public void shouldLogString() throws IOException {
-//        //region when
-//        Facade.log("test string 1");
-////        Facade.printAndFlushString();
-//        Facade.log("other str");
-////        Facade.close();
-//        //endregion
-//
-//        //region then
-//        assertSysoutContains("string: ");
-//        assertSysoutContains("test string 1");
-//        assertSysoutContains("other str");
-//        //endregion
-//    }
+
 
 //    @Test
 //    public void shouldLogBoolean() throws IOException {

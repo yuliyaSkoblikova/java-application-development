@@ -1,6 +1,7 @@
 package com.acme.dbo.txlog;
 
 import com.acme.dbo.txlog.message.IntMessage;
+import com.acme.dbo.txlog.message.StringMessage;
 import com.acme.dbo.txlog.saver.ConsoleSaver;
 
 import static com.acme.dbo.txlog.MessageDecorator.decorateMessageWithPostfix;
@@ -21,6 +22,28 @@ public class Facade {
 
         public static void printAndFlushInt() {
         service.flush();
+    }
+
+    public static void log(String stringMessage){
+        service.log(new StringMessage(stringMessage));
+    }
+
+    public static void printAndFlushString() {
+        printAndFlushInt();
+
+//        if (stringAccumulator.isEmpty()) return;
+//        if (stringCounter > 1) {
+//            printToConsole(decorateMessageWithPostfix(stringAccumulator, stringCounter));
+//        } else {
+//            printToConsole(decorateMessageWithPrefix(stringAccumulator));
+//        }
+//        stringAccumulator = "";
+//        stringCounter = 0;
+    }
+
+
+    public static void close() {
+        printAndFlushInt();
     }
 
 //    public static void printAndFlushInt() {
@@ -59,21 +82,7 @@ public class Facade {
 //    }
 
 
-//
-//    public static void printAndFlushString() {
-//        if (stringAccumulator.isEmpty()) return;
-//        if (stringCounter > 1) {
-//            printToConsole(decorateMessageWithPostfix(stringAccumulator, stringCounter));
-//        } else {
-//            printToConsole(decorateMessageWithPrefix(stringAccumulator));
-//        }
-//        stringAccumulator = "";
-//        stringCounter = 0;
-//    }
-//
-//    public static void close() {
-//        printAndFlushInt();
-//        printAndFlushString();
-//    }
+
+
 
 }

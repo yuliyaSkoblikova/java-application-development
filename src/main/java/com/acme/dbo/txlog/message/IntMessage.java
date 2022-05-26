@@ -1,11 +1,11 @@
 package com.acme.dbo.txlog.message;
 
-public class IntMessage implements Message {
+public class IntMessage extends PrefixDecoratingMessage {
 
-    private final String PRIMITIVE_PREFIX = "primitive: ";
     private int value;
 
     public IntMessage(int value) {
+        super("primitive: ");
         this.value = value;
     }
 
@@ -15,7 +15,7 @@ public class IntMessage implements Message {
 
     @Override
     public String decorate() {
-        return PRIMITIVE_PREFIX + value;
+        return super.decorate(String.valueOf(value));
     }
 
     @Override
@@ -24,7 +24,8 @@ public class IntMessage implements Message {
     }
 
     @Override
-    public void accumulate(Message message) {
+    public Message accumulate(Message message) {
         value += ((IntMessage) message).value;
+        return this;
     }
 }

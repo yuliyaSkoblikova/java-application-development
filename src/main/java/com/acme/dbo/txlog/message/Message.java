@@ -6,5 +6,5 @@ public interface Message {
 
     public boolean isSame(Message message);
 
-    public void accumulate(Message message);
+    public Message accumulate(Message message);
 }

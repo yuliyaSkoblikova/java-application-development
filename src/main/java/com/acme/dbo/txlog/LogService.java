@@ -1,5 +1,6 @@
 package com.acme.dbo.txlog;
 
+import com.acme.dbo.txlog.message.DefaultMessage;
 import com.acme.dbo.txlog.message.IntMessage;
 import com.acme.dbo.txlog.message.Message;
 import com.acme.dbo.txlog.saver.ConsoleSaver;
@@ -11,18 +12,21 @@ public class LogService {
 
     public LogService(Saver saver) {
         this.saver = saver;
+        currentAccumulatedMessage = new DefaultMessage();
     }
 
     public void log(Message message) {
-        if (currentAccumulatedMessage != null && currentAccumulatedMessage.isSame(message)) {
-            currentAccumulatedMessage.accumulate(message);
+
+        if (currentAccumulatedMessage.isSame(message)) {
+            currentAccumulatedMessage = currentAccumulatedMessage.accumulate(message);
         } else {
-            saver.save(message.decorate());
+            saver.save(currentAccumulatedMessage.decorate());
             currentAccumulatedMessage = message;
         }
     }
 
     public void flush(){
-        currentAccumulatedMessage = null;
+        saver.save(currentAccumulatedMessage.decorate());
+        currentAccumulatedMessage = new DefaultMessage();
     }
 }
